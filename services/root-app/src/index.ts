@@ -33,28 +33,7 @@ const draw = (head: HTMLHeadElement, body: HTMLBodyElement) => {
   clean();
   drawHead(head);
   drawBody(body);
-
-  var links = Array.prototype.slice.call(document.getElementsByTagName("link"));
-  for (var i = 0; i < links.length; i++) {
-    if (links[i].href != '') {
-      var ltag = document.createElement("link");
-      ltag.rel = links[i].rel;
-      ltag.href = links[i].href;
-      document.getElementsByTagName("head")[0].appendChild(ltag);
-    }
-  }
-
-  var scripts = Array.prototype.slice.call(document.getElementsByTagName("script"));
-  for (var i = 0; i < scripts.length; i++) {
-    if (scripts[i].src != "") {
-      var tag = document.createElement("script");
-      tag.src = scripts[i].src;
-      document.getElementsByTagName("head")[0].appendChild(tag);
-    }
-    else {
-      eval(scripts[i].innerHTML);
-    }
-  }
+  runScripts();
 }
 
 const drawHead = (head: HTMLHeadElement) => {
@@ -64,6 +43,20 @@ const drawHead = (head: HTMLHeadElement) => {
 const drawBody = (body: HTMLBodyElement) => {
   document.getElementsByTagName('html')[0].appendChild(body);
   body.prepend(rootMenu);
+}
+
+const runScripts = () => {
+  const scripts = Array.prototype.slice.call(document.getElementsByTagName("script"));
+  for (let i = 0; i < scripts.length; i++) {
+    if (scripts[i].src != "") {
+      let tag = document.createElement("script");
+      tag.src = scripts[i].src;
+      document.getElementsByTagName("head")[0].appendChild(tag);
+    }
+    else {
+      eval(scripts[i].innerHTML);
+    }
+  }
 }
 
 const initialize = () => {
@@ -88,7 +81,7 @@ const changeApp = async (newRoute: string, oldRoute: string) => {
   const response = await fetch(`index.html`);
   const html = await response.text();
 
-  const { head, body } = appParser(html, appPath.path);
+  const { head, body } = appParser(html);
   draw(head, body);
 }
 
