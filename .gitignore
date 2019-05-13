@@ -1,4 +1,3 @@
 node_modules
 dist
-volume
-!volume/nginx/config/nginx.conf
+volume/nginx/html
