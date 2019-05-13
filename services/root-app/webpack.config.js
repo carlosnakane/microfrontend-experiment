@@ -2,9 +2,12 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
-  entry: './src/index.ts',
+  entry: {
+    'polyfill': './src/polyfill.ts',
+    'index': './src/index.ts'
+  },
   devtool: 'inline-source-map',
-  mode: 'production',
+  mode: 'development',
   module: {
     rules: [
       {
