@@ -51,6 +51,7 @@ const runScripts = () => {
     if (scripts[i].src != "") {
       let tag = document.createElement("script");
       tag.src = scripts[i].src;
+      scripts[i].parentElement.removeChild(scripts[i]);
       document.getElementsByTagName("head")[0].appendChild(tag);
     }
     else {
