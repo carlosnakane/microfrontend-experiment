@@ -15,7 +15,14 @@ const initialize = () => {
   const currentRoute = getCurrentRoute();
   if (currentRoute !== '/') {
     changeApp(currentRoute, null);
+  } else {
+    window.addEventListener('DOMContentLoaded', blank);
   }
+}
+
+const blank = () => {
+  window.removeEventListener('DOMContenrLoaded', blank);
+  document.body.appendChild(rootMenu);
 }
 
 const changeApp = async (newRoute: string, oldRoute: string) => {
