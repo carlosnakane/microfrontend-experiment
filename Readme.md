@@ -2,7 +2,7 @@
 
 > It's a WIP experiment to simulate an agnostic view render frontend 
 
-This approach fits on projects where there are several teams working on separated modules and they don't need to compose fragmented views like [this](https://micro-frontends.org/).
+This approach fits in projects where there are several teams working on separated modules and they don't need to compose fragmented views like [this](https://micro-frontends.org/).
 This experiment doesn't aim explain the entire CI/CD cicle.
 
 Feel free to make questions and send PR's 👍
@@ -25,7 +25,7 @@ Feel free to make questions and send PR's 👍
 * registry-server (TODO): A service where a CI or a bash script can upload compiled frontend apps. This service send these apps to the http-server. Also it provides a REST API for avaiable apps listing.
 
 ## Before running it for the first time
-You have to build all frontend apps and the containers images, so:
+You have to build all both frontend apps and containers images, so:
 ```
 $ sh build-all.sh
 ```
@@ -33,9 +33,11 @@ $ sh build-all.sh
 
 ## Running
 
-If all goes well while building run:
+If all goes well while building, run the follow command:
 ```
 $ docker-compose up
+# or "docker-compose up --build"
+# in case you changed some Dockerfile
 ```
 
 ## What now?
