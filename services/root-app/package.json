@@ -18,5 +18,8 @@
   "dependencies": {
     "@webcomponents/custom-elements": "^1.2.4",
     "whatwg-fetch": "^3.0.0"
+  },
+  "engines": {
+    "node": ">=8.9.0"
   }
 }
