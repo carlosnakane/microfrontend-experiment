@@ -55,6 +55,7 @@ const runScripts = () => {
       document.getElementsByTagName("head")[0].appendChild(tag);
     }
     else {
+      // TODO: Yes... Looking for something more safe
       eval(scripts[i].innerHTML);
     }
   }
