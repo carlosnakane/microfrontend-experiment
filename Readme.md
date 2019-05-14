@@ -33,7 +33,7 @@ $ sh build-all.sh
 
 ## Running
 
-If all goes well while building, run the follow command:
+If all goes well while building, run the following command:
 ```
 $ docker-compose up
 # or "docker-compose up --build"
