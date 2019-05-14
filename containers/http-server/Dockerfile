@@ -1,3 +1,4 @@
 FROM nginx:stable-alpine
 
-COPY ./nginx-config .
+COPY nginx-config/mime.types etc/nginx/
+COPY nginx-config/nginx.conf etc/nginx/
