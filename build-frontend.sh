@@ -11,7 +11,7 @@ if [ ! -d $HTML_DIR ]; then
   mkdir -p $HTML_DIR
 fi
 
-cd ./services/app-a
+cd ./frontends/app-a
 npm i
 npm run build
 mkdir "../../$HTML_DIR/app-a"

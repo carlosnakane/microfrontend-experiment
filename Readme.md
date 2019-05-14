@@ -15,7 +15,7 @@ Feel free to make questions and send PR's 👍
 
 > P.S. Tested only in a Windows 10 machine
 
-## Services
+## Frontends
 * app-a: React 17 App;
 * app-b: A Angular 6 App;
 * root-app: The main app. This app requests the index.html file from each App, parse it and append it to body. Also it appends all resources like scripts and css files to the head section.
