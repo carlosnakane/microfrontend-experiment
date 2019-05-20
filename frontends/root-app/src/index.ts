@@ -48,7 +48,7 @@ const getAppNameByRoute = (route: string) => {
   if (route == null) {
     return null;
   }
-  const app = routesMock.find(r => r.path === route);
+  const app = routesMock.find(r => route.startsWith(r.path));
   return app == null ? null : app.name;
 }
 
