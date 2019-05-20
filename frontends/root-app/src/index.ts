@@ -23,6 +23,7 @@ const initialize = () => {
 const blank = () => {
   window.removeEventListener('DOMContenrLoaded', blank);
   document.body.appendChild(rootMenu);
+  rootMenu.setAttribute('active', '/');
 }
 
 const changeApp = async (newRoute: string, oldRoute: string) => {
@@ -40,13 +41,15 @@ const changeApp = async (newRoute: string, oldRoute: string) => {
 
   const { head, body } = appParser(html);
   domBuilder(head, body, rootMenu);
+  rootMenu.setAttribute('active', newRoute);
 }
 
 const getAppNameByRoute = (route: string) => {
   if (route == null) {
     return null;
   }
-  return route.split('/')[1];
+  const app = routesMock.find(r => r.path === route);
+  return app == null ? null : app.name;
 }
 
 initialize();
