@@ -12,8 +12,7 @@ const initialize = () => {
 const getCurrentRoute = () => _currentRoute;
 
 const navigate = (route: string) => {
-  const appName = route.replace('/', '');
-  history.pushState(null, null, appName);
+  history.pushState(null, null, route);
   const oldRoute = _currentRoute;
   _currentRoute = route;
   const newRoute = _currentRoute;

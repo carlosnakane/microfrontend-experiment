@@ -30,12 +30,12 @@ const changeApp = async (newRoute: string, oldRoute: string) => {
   if (newApp === getAppNameByRoute(oldRoute)) {
     return;
   }
-  const appPath = appsMock[newApp];
-  if (appPath == null) {
+  const app = appsMock[newApp];
+  if (app == null) {
     return;
   }
 
-  const response = await fetch(`index.html`);
+  const response = await fetch(`${app.path}/index.html`);
   const html = await response.text();
 
   const { head, body } = appParser(html);
