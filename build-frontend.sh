@@ -11,6 +11,13 @@ if [ ! -d $HTML_DIR ]; then
   mkdir -p $HTML_DIR
 fi
 
+
+cd ./frontends/component-a
+npm i
+npm run build
+mkdir "../../$HTML_DIR/component-a"
+cp -r build/* "../../$HTML_DIR/component-a"
+
 cd ./frontends/app-a
 npm i
 npm run build
