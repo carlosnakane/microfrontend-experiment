@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "rollup -c"
+    "build": "rollup -c",
+    "postbuild": "node generate-app-manifest.js"
   },
   "license": "ISC",
   "devDependencies": {

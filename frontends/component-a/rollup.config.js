@@ -1,9 +1,5 @@
 import babel from "rollup-plugin-babel";
 import nodeResolve from "rollup-plugin-node-resolve";
-import path from "path";
-
-const PACKAGE_ROOT_PATH = process.cwd();
-const PKG_JSON = require(path.join(PACKAGE_ROOT_PATH, "package.json"));
 
 export default {
   input: "src/index.ts",
@@ -11,7 +7,8 @@ export default {
     file: "dist/index.js",
     format: "iife",
     name: "index",
-    sourcemap: true
+    sourcemap: true,
+    chunkFileNames: "[name]-[hash].js"
   },
   plugins: [
     nodeResolve({

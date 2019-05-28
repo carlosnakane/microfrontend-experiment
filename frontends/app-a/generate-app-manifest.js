@@ -1,5 +1,5 @@
 const path = require('path');
-var fs = require('fs');
+const fs = require('fs');
 const CRAAssetManifest = require(path.resolve(__dirname, './build/asset-manifest.json'));
 
 const assets = Object.keys(CRAAssetManifest.files)
