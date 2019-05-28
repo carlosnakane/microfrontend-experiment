@@ -16,9 +16,9 @@ cd ./frontends/component-a
 npm i
 npm run build
 mkdir "../../$HTML_DIR/component-a"
-cp -r build/* "../../$HTML_DIR/component-a"
+cp -r dist/* "../../$HTML_DIR/component-a"
 
-cd ./frontends/app-a
+cd ../app-a
 npm i
 npm run build
 mkdir "../../$HTML_DIR/app-a"
