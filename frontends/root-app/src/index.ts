@@ -4,24 +4,31 @@ import { getCurrentRoute, initialize as initializeRouter, subscribe, navigate } 
 import { appsMock, routesMock } from './mock';
 import loadApp from './load-app';
 
+
 const rootMenu = document.createElement('root-menu');
-rootMenu.addEventListener('routeClick', (e: CustomEvent<RootMenuRouteClickEvent>) => navigate(e.detail));
-rootMenu.setAttribute('routes', JSON.stringify(routesMock));
+const baseHref = document.createElement('base');
 
 const initialize = () => {
   initializeRouter();
   subscribe(changeApp);
+
+  rootMenu.addEventListener('routeClick', (e: CustomEvent<RootMenuRouteClickEvent>) => navigate(e.detail));
+  rootMenu.setAttribute('routes', JSON.stringify(routesMock));
+  document.body.appendChild(rootMenu);
+
+  baseHref.href = '/';
+  document.head.appendChild(baseHref);
+
   const currentRoute = getCurrentRoute();
   if (currentRoute !== '/') {
     changeApp(currentRoute, null);
   } else {
-    window.addEventListener('DOMContentLoaded', blank);
+    blank();
   }
 }
 
 const blank = () => {
   window.removeEventListener('DOMContentLoaded', blank);
-  document.body.appendChild(rootMenu);
   rootMenu.setAttribute('active', '/');
 }
 
@@ -42,7 +49,6 @@ const changeApp = async (newRoute: string, oldRoute: string) => {
     return;
   }
 
-  document.body.prepend(rootMenu);
   rootMenu.setAttribute('active', newRoute);
 }
 
@@ -54,4 +60,4 @@ const getAppNameByRoute = (route: string) => {
   return app == null ? null : app.name;
 }
 
-initialize();
+window.addEventListener('DOMContentLoaded', initialize);

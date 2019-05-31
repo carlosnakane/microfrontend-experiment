@@ -6,6 +6,9 @@ type LoadingResult = {
   message?: string
 }
 
+let currentAppRootElement: ChildNode = null;
+const currentAppAssetElements: (HTMLScriptElement | HTMLLinkElement)[] = [];
+
 const loadManifest = async (appUrl: string): Promise<IAppManifest> => {
   const manifest = await fetch(`${appUrl}/app-manifest.json`);
   if (manifest.status === 200) {
@@ -26,6 +29,7 @@ const loadAsset = (url: string): Promise<LoadingResult> => {
     element = document.createElement("script");
     element.src = url;
     document.getElementsByTagName("head")[0].appendChild(element);
+    currentAppAssetElements.push(element);
     return new Promise<LoadingResult>((resolve, reject) => {
       element.addEventListener('error', () => { reject({ result: 'error', message: `Can not load ${url}` } as LoadingResult) });
       element.addEventListener('load', () => resolve({
@@ -39,7 +43,7 @@ const loadAsset = (url: string): Promise<LoadingResult> => {
     element.href = url;
     element.rel = 'stylesheet'
     document.getElementsByTagName("head")[0].appendChild(element);
-
+    currentAppAssetElements.push(element);
     // TODO: There is no a right way to figure out if css files were loaded. Looking for workarounds...
     return Promise.resolve({
       result: 'success'
@@ -57,8 +61,16 @@ const unloadCurrentApp = async (): Promise<void> => {
     } else {
       appLifecycle.unmount();
     }
-    document.body.innerHTML = '';
-    document.head.innerHTML = '';
+    window['lifecycle'] = null;
+    if (currentAppRootElement !== null) {
+      if (document.body.contains(currentAppRootElement)) {
+        document.body.removeChild(currentAppRootElement);
+      }
+    }
+
+    currentAppAssetElements.forEach(e => document.head.removeChild(e));
+    currentAppAssetElements.length = 0;
+
   }
 
   Promise.resolve();
@@ -82,11 +94,14 @@ const loadApp = async (baseUrl: string, appName: string): Promise<LoadingResult>
     return Promise.reject({ result: 'error', message: `There is no ${appName} or its manifest is invalid` });
   }
 
+  await unloadCurrentApp();
+
   const appRootElement = new DOMParser().parseFromString(manifest.rootnode, 'text/html').body.childNodes;
 
   if (appRootElement.length === 0) {
     Promise.reject({ result: 'error', message: `rootnode missing in ${appName} manifest` });
   }
+
 
   if (Array.isArray(manifest.assets) && manifest.assets.length > 0) {
     const assetsLoading = await loadAppAssets(manifest.assets.map(assetsUrl => `${appUrl}/${assetsUrl}`));
@@ -95,12 +110,11 @@ const loadApp = async (baseUrl: string, appName: string): Promise<LoadingResult>
     }
   }
 
-  await unloadCurrentApp();
-
-  const baseElement = document.createElement('base');
+  const baseElement = document.getElementsByTagName('base')[0];
   baseElement.setAttribute('href', `/${appName}/`);
-  document.getElementsByTagName("head")[0].appendChild(baseElement);
-  document.getElementsByTagName("body")[0].appendChild(appRootElement[0]);
+
+  currentAppRootElement = appRootElement[0];
+  document.getElementsByTagName("body")[0].appendChild(currentAppRootElement);
 
   const loadEntrypoint = await loadAsset(`${appUrl}/${manifest.entrypoint}`);
 
