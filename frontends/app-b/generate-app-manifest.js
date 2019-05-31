@@ -4,14 +4,15 @@ const fs = require('fs');
 
 const writeManifest = (assets) => {
 
-  const entrypoint = "main.js";
-  const filteredAssets = assets.filter(file => file !== entrypoint);
+  const entrypointPattern = /main\.[\w\d]+\.js/;
+  const entrypoint = assets.filter(file => entrypointPattern.exec(file) !== null)[0];
   const appManifest = {
+    "rootnode": "<app-root></app-root>",
     "entrypoint": entrypoint,
     "components": [
       "component-a"
     ],
-    "assets": filteredAssets
+    "assets": assets.filter(file => file !== entrypoint)
   };
 
   fs.writeFile (path.resolve(__dirname, "./dist/app-b/app-manifest.json"), JSON.stringify(appManifest), function(err) {

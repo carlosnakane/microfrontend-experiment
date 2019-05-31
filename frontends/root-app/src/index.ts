@@ -4,6 +4,7 @@ import { getCurrentRoute, initialize as initializeRouter, subscribe, navigate } 
 import domBuilder from './dom-builder';
 import appParser from './app-parser';
 import { appsMock, routesMock } from './mock';
+import loadApp from './load-app';
 
 const rootMenu = document.createElement('root-menu');
 rootMenu.addEventListener('routeClick', (e: CustomEvent<RootMenuRouteClickEvent>) => navigate(e.detail));

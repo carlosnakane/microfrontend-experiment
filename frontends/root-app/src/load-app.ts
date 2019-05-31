@@ -1,5 +1,5 @@
 import { IAppManifest } from "./i-app-manifest";
-import { IAppApi } from "./i-app-api";
+import { IAppLifecycle } from "./i-app-lifecyle";
 
 type LoadingResult = {
   result: 'success' | 'partial' | 'error',
@@ -65,11 +65,24 @@ const loadApp = async (baseUrl: string, appName: string): Promise<LoadingResult>
     }
   }
 
-  const module = (import(`${baseUrl}/${manifest.entrypoint}`) as Promise<IAppApi>);
+  const baseElement = document.createElement('base');
+  baseElement.setAttribute('href', '/app-b/');
+  document.getElementsByTagName("head")[0].appendChild(baseElement);
+  document.getElementsByTagName("body")[0].appendChild(document.createElement('app-root'));
 
-  console.log(module);
+  const loadEntrypoint = await loadAsset(`${appUrl}/${manifest.entrypoint}`);
 
-  return Promise.reject();
+  if (loadEntrypoint.result === 'error') {
+    return Promise.reject({ result: 'error', message: `Could not load ${appName}'s entrypoint` });
+  }
+
+  const appLifecycle = window['lifecycle'] as IAppLifecycle;
+
+  if (appLifecycle != null && appLifecycle.mount != null) {
+    appLifecycle.mount();
+  }
+
+  return Promise.resolve({ result: 'success' });
 
 }
 

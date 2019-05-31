@@ -10,6 +10,7 @@ const assets = Object.keys(CRAAssetManifest.files)
   .map(name => CRAAssetManifest.files[name]);
 
 const appManifest = {
+  "rootnode": "<div id='root'></div>",
 	"entrypoint": CRAAssetManifest.files['main.js'],
 	"components": [
 		"component-a"

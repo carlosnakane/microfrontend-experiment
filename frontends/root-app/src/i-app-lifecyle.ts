@@ -1,4 +1,4 @@
-export interface IAppApi {
+export interface IAppLifecycle {
   mount: () => void;
   unmount: () => void;
 }
