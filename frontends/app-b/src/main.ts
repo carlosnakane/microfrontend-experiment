@@ -16,7 +16,7 @@ const mount = () => {
     .catch(err => console.error(err));
 }
 
-const umount = () => {
+const unmount = () => {
   if (mainModule != null) {
     mainModule.destroy();
   }
@@ -24,5 +24,5 @@ const umount = () => {
 
 window['lifecycle'] = {
   mount,
-  umount
+  unmount
 };

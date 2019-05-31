@@ -21,34 +21,47 @@ const loadManifest = async (appUrl: string): Promise<IAppManifest> => {
 
 const loadAsset = (url: string): Promise<LoadingResult> => {
   let element: HTMLScriptElement | HTMLLinkElement = null;
+
   if (url.endsWith('.js')) {
     element = document.createElement("script");
     element.src = url;
     document.getElementsByTagName("head")[0].appendChild(element);
+    return new Promise<LoadingResult>((resolve, reject) => {
+      element.addEventListener('error', () => { reject({ result: 'error', message: `Can not load ${url}` } as LoadingResult) });
+      element.addEventListener('load', () => resolve({
+        result: 'success'
+      } as LoadingResult));
+    });
   }
+
   if (url.endsWith('.css')) {
     element = document.createElement("link");
     element.href = url;
+    element.rel = 'stylesheet'
     document.getElementsByTagName("head")[0].appendChild(element);
-  }
 
-  if (element === null) {
-    return Promise.reject({ result: 'error', message: `Unexpected file type: ${url}` } as LoadingResult);
-  }
-
-  return new Promise<LoadingResult>((resolve, reject) => {
-    element.addEventListener('error', () => { reject({ result: 'error', message: `Can not load ${url}` } as LoadingResult) });
-    element.addEventListener('load', () => resolve({
+    // TODO: There is no a right way to figure out if css files were loaded. Looking for workarounds...
+    return Promise.resolve({
       result: 'success'
-    } as LoadingResult));
-  });
+    } as LoadingResult);
+  }
+  return Promise.reject({ result: 'error', message: `Unexpected file type: ${url}` } as LoadingResult);
 }
-const unloadCurrentApp = () => {
+
+const unloadCurrentApp = async (): Promise<void> => {
   const appLifecycle = window['lifecycle'] as IAppLifecycle;
   if (appLifecycle != null) {
-    appLifecycle.unmount();
+    // @ts-ignore
+    if (typeof appLifecycle.unmount.then === 'function') {
+      await appLifecycle.unmount();
+    } else {
+      appLifecycle.unmount();
+    }
     document.body.innerHTML = '';
+    document.head.innerHTML = '';
   }
+
+  Promise.resolve();
 }
 
 const loadAppAssets = async (assetsUrl: string[]): Promise<LoadingResult> => {
@@ -82,7 +95,7 @@ const loadApp = async (baseUrl: string, appName: string): Promise<LoadingResult>
     }
   }
 
-  unloadCurrentApp();
+  await unloadCurrentApp();
 
   const baseElement = document.createElement('base');
   baseElement.setAttribute('href', `/${appName}/`);

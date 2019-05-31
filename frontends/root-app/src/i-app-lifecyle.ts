@@ -1,4 +1,4 @@
 export interface IAppLifecycle {
   mount: () => void;
-  unmount: () => void;
+  unmount: () => void | Promise<void>;
 }
