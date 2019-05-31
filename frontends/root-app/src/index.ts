@@ -1,8 +1,6 @@
 import './root-menu';
 import { RootMenuRouteClickEvent } from './root-menu';
 import { getCurrentRoute, initialize as initializeRouter, subscribe, navigate } from './router';
-import domBuilder from './dom-builder';
-import appParser from './app-parser';
 import { appsMock, routesMock } from './mock';
 import loadApp from './load-app';
 
@@ -22,7 +20,7 @@ const initialize = () => {
 }
 
 const blank = () => {
-  window.removeEventListener('DOMContenrLoaded', blank);
+  window.removeEventListener('DOMContentLoaded', blank);
   document.body.appendChild(rootMenu);
   rootMenu.setAttribute('active', '/');
 }
@@ -37,11 +35,14 @@ const changeApp = async (newRoute: string, oldRoute: string) => {
     return;
   }
 
-  const response = await fetch(`${app.path}/index.html`);
-  const html = await response.text();
+  const loadAppResult = await loadApp(location.origin, app.name);
 
-  const { head, body } = appParser(html);
-  domBuilder(head, body, rootMenu);
+  if (loadAppResult.result === 'error') {
+    console.log(loadAppResult.message);
+    return;
+  }
+
+  document.body.prepend(rootMenu);
   rootMenu.setAttribute('active', newRoute);
 }
 

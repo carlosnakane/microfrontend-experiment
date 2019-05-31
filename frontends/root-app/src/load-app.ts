@@ -9,7 +9,11 @@ type LoadingResult = {
 const loadManifest = async (appUrl: string): Promise<IAppManifest> => {
   const manifest = await fetch(`${appUrl}/app-manifest.json`);
   if (manifest.status === 200) {
-    return await manifest.json();
+    try {
+      return await manifest.json();
+    } catch (e) {
+      return null;
+    }
   }
 
   return null;
@@ -39,6 +43,13 @@ const loadAsset = (url: string): Promise<LoadingResult> => {
     } as LoadingResult));
   });
 }
+const unloadCurrentApp = () => {
+  const appLifecycle = window['lifecycle'] as IAppLifecycle;
+  if (appLifecycle != null) {
+    appLifecycle.unmount();
+    document.body.innerHTML = '';
+  }
+}
 
 const loadAppAssets = async (assetsUrl: string[]): Promise<LoadingResult> => {
   const assets: Promise<LoadingResult>[] = assetsUrl.map(assetUrl => loadAsset(assetUrl));
@@ -58,6 +69,12 @@ const loadApp = async (baseUrl: string, appName: string): Promise<LoadingResult>
     return Promise.reject({ result: 'error', message: `There is no ${appName} or its manifest is invalid` });
   }
 
+  const appRootElement = new DOMParser().parseFromString(manifest.rootnode, 'text/html').body.childNodes;
+
+  if (appRootElement.length === 0) {
+    Promise.reject({ result: 'error', message: `rootnode missing in ${appName} manifest` });
+  }
+
   if (Array.isArray(manifest.assets) && manifest.assets.length > 0) {
     const assetsLoading = await loadAppAssets(manifest.assets.map(assetsUrl => `${appUrl}/${assetsUrl}`));
     if (assetsLoading.result === 'error') {
@@ -65,10 +82,12 @@ const loadApp = async (baseUrl: string, appName: string): Promise<LoadingResult>
     }
   }
 
+  unloadCurrentApp();
+
   const baseElement = document.createElement('base');
-  baseElement.setAttribute('href', '/app-b/');
+  baseElement.setAttribute('href', `/${appName}/`);
   document.getElementsByTagName("head")[0].appendChild(baseElement);
-  document.getElementsByTagName("body")[0].appendChild(document.createElement('app-root'));
+  document.getElementsByTagName("body")[0].appendChild(appRootElement[0]);
 
   const loadEntrypoint = await loadAsset(`${appUrl}/${manifest.entrypoint}`);
 
