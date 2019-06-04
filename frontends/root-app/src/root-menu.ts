@@ -212,4 +212,6 @@ class RootMenu extends HTMLElement {
 
 export { RootMenuRouteClickEvent };
 
-window.customElements.define('root-menu', RootMenu);
+if (document.createElement('root-menu').constructor === HTMLElement) {
+  customElements.define('root-menu', RootMenu);
+}
