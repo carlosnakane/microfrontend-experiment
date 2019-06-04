@@ -5,7 +5,6 @@ import './App.css';
 function App() {
   return (
     <div className="App">
-      <component-a></component-a>
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
@@ -20,6 +19,7 @@ function App() {
           Learn React
         </a>
       </header>
+      <component-a name="React" items={['Itens', 'vindos', 'do', 'React']}></component-a>
     </div>
   );
 }
