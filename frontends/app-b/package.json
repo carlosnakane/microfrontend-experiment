@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --base-href=/app-b/ outputHashing=all",
+    "build": "ng build --base-href=/app-b/ --outputHashing=all",
     "postbuild": "node generate-app-manifest.js",
     "test": "ng test",
     "lint": "ng lint",

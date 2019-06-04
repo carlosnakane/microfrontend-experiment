@@ -1,12 +1,30 @@
 
-import { LitElement, html } from 'lit-element';
+import { LitElement, html, property } from 'lit-element';
 
 class ComponentA extends LitElement {
+
+  @property()
+  items = [];
+
+  @property()
+  name = '';
+
   render() {
     return html`
-      <div>Component A</div>
+      <div>
+        <h3>Polymer WebComponent dentro do: ${this.name}</h3>
+        <ul>
+      ${
+      this.items.map(i => `<li>${i}</li>`)
+      }
+        </ul>
+      </div>
     `;
   }
 }
 
-customElements.define('component-a', ComponentA);
+const elementTag = 'component-a';
+
+if (document.createElement(elementTag).constructor === HTMLElement) {
+  customElements.define(elementTag, ComponentA);
+}
