@@ -6,6 +6,9 @@
     "module": "esNext",
     "target": "es2015",
     "allowJs": false,
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "lib": [
       "dom",
       "es2015"

@@ -1,7 +1,7 @@
 import './root-menu';
 import { RootMenuRouteClickEvent } from './root-menu';
 import { getCurrentRoute, initialize as initializeRouter, subscribe, navigate } from './router';
-import { appsMock, routesMock } from './mock';
+import { routesMock } from './mock';
 import loadApp from './load-app';
 
 
@@ -9,10 +9,12 @@ const rootMenu = document.createElement('root-menu');
 const baseHref = document.createElement('base');
 
 const initialize = () => {
+  window.removeEventListener('DOMContentLoaded', blank);
+
   initializeRouter();
   subscribe(changeApp);
 
-  rootMenu.addEventListener('routeClick', (e: CustomEvent<RootMenuRouteClickEvent>) => navigate(e.detail));
+  rootMenu.addEventListener('routeClick', (e: Event) => navigate((e as CustomEvent<RootMenuRouteClickEvent>).detail));
   rootMenu.setAttribute('routes', JSON.stringify(routesMock));
   document.body.appendChild(rootMenu);
 
@@ -21,28 +23,30 @@ const initialize = () => {
 
   const currentRoute = getCurrentRoute();
   if (currentRoute !== '/') {
-    changeApp(currentRoute, null);
+    changeApp(currentRoute);
   } else {
     blank();
   }
 }
 
 const blank = () => {
-  window.removeEventListener('DOMContentLoaded', blank);
   rootMenu.setAttribute('active', '/');
 }
 
-const changeApp = async (newRoute: string, oldRoute: string) => {
+const changeApp = async (newRoute: string, oldRoute?: string) => {
+
   const newApp = getAppNameByRoute(newRoute);
-  if (newApp === getAppNameByRoute(oldRoute)) {
-    return;
-  }
-  const app = appsMock[newApp];
-  if (app == null) {
+
+  if (newApp == null) {
+    console.log('Invalid route');
     return;
   }
 
-  const loadAppResult = await loadApp(location.origin, app.name);
+  if (oldRoute != null && newApp === getAppNameByRoute(oldRoute)) {
+    return;
+  }
+
+  const loadAppResult = await loadApp(location.origin, newApp);
 
   if (loadAppResult.result === 'error') {
     console.log(loadAppResult.message);

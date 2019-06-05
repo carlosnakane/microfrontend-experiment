@@ -1,9 +1,9 @@
-type SubscriberCallback = (newRoute?: string, oldRoute?: string) => {}
+type SubscriberCallback = (newRoute: string, oldRoute?: string) => {}
 type RouteChangeEvent = { newRoute: string, oldRoute: string };
 
 const _subscribers: SubscriberCallback[] = [];
 
-let _currentRoute: string = null;
+let _currentRoute: string = '';
 
 const initialize = () => {
   _currentRoute = location.pathname;
@@ -12,7 +12,7 @@ const initialize = () => {
 const getCurrentRoute = () => _currentRoute;
 
 const navigate = (route: string) => {
-  history.pushState(null, null, route);
+  history.pushState(null, '', route);
   const oldRoute = _currentRoute;
   _currentRoute = route;
   const newRoute = _currentRoute;

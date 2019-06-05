@@ -6,10 +6,10 @@ type LoadingResult = {
   message?: string
 }
 
-let currentAppRootElement: ChildNode = null;
+let currentAppRootElement: ChildNode;
 const currentAppAssetElements: (HTMLScriptElement | HTMLLinkElement)[] = [];
 
-const loadManifest = async (appUrl: string): Promise<IAppManifest> => {
+const loadManifest = async (appUrl: string): Promise<IAppManifest | null> => {
   const manifest = await fetch(`${appUrl}/app-manifest.json`);
   if (manifest.status === 200) {
     try {
@@ -23,7 +23,7 @@ const loadManifest = async (appUrl: string): Promise<IAppManifest> => {
 };
 
 const loadAsset = (url: string): Promise<LoadingResult> => {
-  let element: HTMLScriptElement | HTMLLinkElement = null;
+  let element: HTMLScriptElement | HTMLLinkElement;
 
   if (url.endsWith('.js')) {
     element = document.createElement("script");

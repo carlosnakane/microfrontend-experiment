@@ -144,6 +144,9 @@ class RootMenu extends HTMLElement {
     this._shadowRoot = this.attachShadow({ 'mode': 'open' });
     this._shadowRoot.appendChild(template.content.cloneNode(true));
     const container = this._shadowRoot.querySelector('div');
+    if (container == null) {
+      return;
+    }
     container.addEventListener('click', (e: Event) => {
       e.preventDefault();
       const href = (e.target as Element).getAttribute('href');
@@ -160,6 +163,9 @@ class RootMenu extends HTMLElement {
 
   draw() {
     const container = this._shadowRoot.querySelector('div');
+    if (container == null || this.routes == null) {
+      return;
+    }
     const items = JSON.parse(this.routes) as Routes;
     container.innerHTML = '';
 
@@ -191,7 +197,7 @@ class RootMenu extends HTMLElement {
     return container;
   }
 
-  attributeChangedCallback(name: string, oldVal: string, newVal: string) {
+  attributeChangedCallback() {
     if (name === 'routes' || name === 'active') {
       this.draw();
     }
