@@ -2,14 +2,16 @@ import './root-menu';
 import { RootMenuRouteClickEvent } from './root-menu';
 import { getCurrentRoute, initialize as initializeRouter, subscribe, navigate } from './router';
 import { routesMock } from './mock';
-import loadApp from './load-app';
-
+import AppLifecycle from './app-lifecycle';
 
 const rootMenu = document.createElement('root-menu');
 const baseHref = document.createElement('base');
+let appLife: AppLifecycle;
 
 const initialize = () => {
   window.removeEventListener('DOMContentLoaded', blank);
+
+  appLife = new AppLifecycle(document);
 
   initializeRouter();
   subscribe(changeApp);
@@ -46,7 +48,7 @@ const changeApp = async (newRoute: string, oldRoute?: string) => {
     return;
   }
 
-  const loadAppResult = await loadApp(location.origin, newApp);
+  const loadAppResult = await appLife.loadApp(location.origin, newApp);
 
   if (loadAppResult.result === 'error') {
     console.log(loadAppResult.message);
