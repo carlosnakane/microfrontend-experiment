@@ -37,4 +37,12 @@ describe('load-asset should...', () => {
     expect(linkTag[0].href).toBe(linkHref);
   });
 
+  it('create nothing inside header tag due to an invalid file type', () => {
+    const document = createDocument();
+    const linkHref = 'http://nowhere/unknown.extension';
+    loadAsset(linkHref, document)
+      .catch(e => expect(e).toMatchObject({ result: 'error', message: `Unexpected file type: ${linkHref}` }))
+  });
+
+
 });

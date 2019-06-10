@@ -10,7 +10,6 @@ module.exports = {
   "setupFiles": [
     "./setup-jest.js"
   ],
-  "testEnvironment": "node",
   "collectCoverage": true,
   "globals": {
     "ts-jest": {
