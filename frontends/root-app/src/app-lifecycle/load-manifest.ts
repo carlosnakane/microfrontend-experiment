@@ -4,7 +4,7 @@ const manifestFileName = 'app-manifest.json';
 
 const loadManifest = async (appUrl: string): Promise<IAppManifest | null> => {
   const manifest = await fetch(`${appUrl}/${manifestFileName}`);
-  if (manifest.status === 200) {
+  if (manifest != null && manifest.status === 200) {
     try {
       return await manifest.json();
     } catch (e) {

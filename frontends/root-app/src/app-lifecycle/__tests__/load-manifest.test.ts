@@ -14,18 +14,28 @@ describe('load-manifest should...', () => {
     fetchMock.mockResponseOnce(JSON.stringify({ data: mockData }));
 
     loadManifest(mockUrl).then(res => {
-      expect(res).toBe({ data: mockData });
+      expect(res).toStrictEqual({ data: mockData });
     });
 
     expect(fetchMock.mock.calls.length).toEqual(1);
     expect(fetchMock.mock.calls[0][0]).toEqual(`${mockUrl}/${manifestFileName}`);
   });
 
-  it('throw an error', () => {
+  it('throw an error due to a invalid response payload', async () => {
+    const mockUrl = 'http://test.com';
+
+    const result = await loadManifest(mockUrl);
+    expect(result).toBeNull();
+
+    expect(fetchMock.mock.calls.length).toEqual(1);
+    expect(fetchMock.mock.calls[0][0]).toEqual(`${mockUrl}/${manifestFileName}`);
+  });
+
+  it('throw an error due to a invalid url', async () => {
     const mockUrl = 'http://nowhere';
-    loadManifest(mockUrl).then(res => {
-      expect(res).toBeNull();
-    });
+
+    const result = await loadManifest(mockUrl);
+    expect(result).toBeNull();
 
     expect(fetchMock.mock.calls.length).toEqual(1);
     expect(fetchMock.mock.calls[0][0]).toEqual(`${mockUrl}/${manifestFileName}`);
