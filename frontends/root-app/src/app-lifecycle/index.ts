@@ -1,9 +1,6 @@
-import { IAppManifest } from "./app-lifecycle/i-app-manifest";
-
-interface ILoadingResult {
-  result: 'success' | 'partial' | 'error';
-  message?: string;
-}
+import { ILoadingResult } from "./i-loading-result";
+import loadManifest from './load-manifest';
+import loadAsset from './load-asset';
 
 interface ILifecycleMethods {
   mount: () => void;
@@ -18,9 +15,9 @@ class AppLifecycle {
 
   public constructor(private document: Document, private window: Window) { }
 
-  public loadApp = async (baseUrl: string, appName: string): Promise<ILoadingResult> => {
+  public loadApp = async (baseUrl: string, appName: string): Promise<ILoadingResult<void>> => {
     const appUrl = `${baseUrl}/${appName}`;
-    const manifest = await this.loadManifest(appUrl);
+    const manifest = await loadManifest(appUrl);
     if (manifest == null) {
       return Promise.reject({ result: 'error', message: `There is no ${appName} or its manifest is invalid` });
     }
@@ -46,7 +43,7 @@ class AppLifecycle {
     this.rootElement = appRootElement[0];
     this.document.getElementsByTagName("body")[0].appendChild(this.rootElement);
 
-    const loadEntrypoint = await this.loadAsset(`${appUrl}/${manifest.entrypoint}`);
+    const loadEntrypoint = await loadAsset(`${appUrl}/${manifest.entrypoint}`, this.document);
 
     if (loadEntrypoint.result === 'error') {
       return Promise.reject({ result: 'error', message: `Could not load ${appName}'s entrypoint` });
@@ -62,44 +59,7 @@ class AppLifecycle {
 
   }
 
-  private loadManifest = async (appUrl: string): Promise<IAppManifest | null> => {
-    const manifest = await fetch(`${appUrl}/app-manifest.json`);
-    if (manifest.status === 200) {
-      try {
-        return await manifest.json();
-      } catch (e) {
-        return null;
-      }
-    }
 
-    return null;
-  };
-
-  private loadAsset = (url: string): Promise<ILoadingResult> => {
-    let element: HTMLScriptElement | HTMLLinkElement;
-
-    if (url.endsWith('.js')) {
-      element = this.document.createElement("script");
-      element.src = url;
-      this.document.getElementsByTagName("head")[0].appendChild(element);
-      this.assetElements.push(element);
-      return new Promise<ILoadingResult>((resolve, reject): void => {
-        element.addEventListener('error', (): void => { reject({ result: 'error', message: `Can not load ${url}` }) });
-        element.addEventListener('load', (): void => resolve({ result: 'success' }));
-      });
-    }
-
-    if (url.endsWith('.css')) {
-      element = this.document.createElement("link");
-      element.href = url;
-      element.rel = 'stylesheet'
-      this.document.getElementsByTagName("head")[0].appendChild(element);
-      this.assetElements.push(element);
-      // TODO: There is no a right way to figure out if css files were loaded. Looking for workarounds...
-      return Promise.resolve({ result: 'success' });
-    }
-    return Promise.reject({ result: 'error', message: `Unexpected file type: ${url}` });
-  }
 
   private unloadCurrentApp = async (): Promise<void> => {
     const appLifecycle = this.window[lifecycleWindowKey] as ILifecycleMethods;
@@ -125,8 +85,8 @@ class AppLifecycle {
     Promise.resolve();
   }
 
-  private loadAppAssets = async (assetsUrl: string[]): Promise<ILoadingResult> => {
-    const assets: Promise<ILoadingResult>[] = assetsUrl.map(assetUrl => this.loadAsset(assetUrl));
+  private loadAppAssets = async (assetsUrl: string[]): Promise<ILoadingResult<void>> => {
+    const assets: Promise<ILoadingResult<HTMLScriptElement | HTMLLinkElement>>[] = assetsUrl.map(assetUrl => loadAsset(assetUrl, this.document));
     const result = await Promise.all(assets);
     const errors = result.filter(item => !item).length;
     if (errors > 0) {

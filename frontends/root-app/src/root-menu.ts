@@ -130,16 +130,19 @@ template.innerHTML = `
   </div>
 `;
 
-type RouteItem = { path: string, label: '', name: string };
-type Routes = [RouteItem];
+interface IRouteItem {
+  path: string;
+  label: '';
+  name: string;
+}
 
-type RootMenuRouteClickEvent = string;
+type Routes = [IRouteItem];
 
 class RootMenu extends HTMLElement {
 
   private _shadowRoot: ShadowRoot;
 
-  constructor() {
+  public constructor() {
     super();
     this._shadowRoot = this.attachShadow({ 'mode': 'open' });
     this._shadowRoot.appendChild(template.content.cloneNode(true));
@@ -157,11 +160,11 @@ class RootMenu extends HTMLElement {
     });
   }
 
-  connectedCallback() {
+  public connectedCallback() {
     this.draw();
   }
 
-  draw() {
+  private draw() {
     const container = this._shadowRoot.querySelector('div');
     if (container == null || this.routes == null) {
       return;
@@ -177,14 +180,14 @@ class RootMenu extends HTMLElement {
     container.appendChild(node);
   }
 
-  drawNode(items: Routes) {
+  private drawNode(items: Routes) {
     const container = document.createElement('ul');
     const children = items.map(item => this.drawChildNode(item).outerHTML);
     container.innerHTML = children.join('');
     return container;
   }
 
-  drawChildNode(item: RouteItem) {
+  private drawChildNode(item: IRouteItem) {
     const container = document.createElement('li');
     if (this.active != null && item.path === this.active) {
       container.className = 'active';
@@ -197,26 +200,24 @@ class RootMenu extends HTMLElement {
     return container;
   }
 
-  attributeChangedCallback() {
+  public attributeChangedCallback() {
     if (name === 'routes' || name === 'active') {
       this.draw();
     }
   }
 
-  static get observedAttributes() {
+  public static get observedAttributes() {
     return ['routes', 'active'];
   }
 
-  get routes() {
+  public get routes() {
     return this.getAttribute('routes');
   }
 
-  get active() {
+  public get active() {
     return this.getAttribute('active');
   }
 }
-
-export { RootMenuRouteClickEvent };
 
 if (document.createElement('root-menu').constructor === HTMLElement) {
   customElements.define('root-menu', RootMenu);

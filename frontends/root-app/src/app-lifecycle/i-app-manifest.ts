@@ -1,5 +1,5 @@
 export interface IAppManifest {
-  rootnode: string
+  rootnode: string;
   entrypoint: string;
-  assets: string[]
+  assets: string[];
 }

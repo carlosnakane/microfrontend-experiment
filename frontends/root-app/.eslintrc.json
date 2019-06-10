@@ -1,20 +1,30 @@
 {
+  "parser": "@typescript-eslint/parser",
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended"
   ],
   "env": {
-    "browser": true
+    "browser": true,
+    "es6": true
   },
-  "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaVersion": 2017,
     "sourceType": "module"
   },
   "plugins": [
-    "@typescript-eslint/eslint-plugin"
+    "@typescript-eslint"
   ],
   "rules": {
-    "@typescript-eslint/no-unused-vars": 0
+    "@typescript-eslint/no-unused-vars": 0,
+    "@typescript-eslint/no-parameter-properties": 0,
+    "@typescript-eslint/interface-name-prefix": 0,
+    "@typescript-eslint/explicit-function-return-type": 0,
+    "@typescript-eslint/no-explicit-any": 2,
+    "@typescript-eslint/indent": [
+      "error",
+      2
+    ],
+    "no-console": 0
   }
 }
