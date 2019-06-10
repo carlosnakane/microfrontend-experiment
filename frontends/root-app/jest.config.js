@@ -9,5 +9,10 @@ module.exports = {
   "automock": false,
   "setupFiles": [
     "./setup-jest.js"
-  ]
+  ],
+  "globals": {
+    "ts-jest": {
+      "tsConfig": "tsconfig.test.json"
+    }
+  }
 }
