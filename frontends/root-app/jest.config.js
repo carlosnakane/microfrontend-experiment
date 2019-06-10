@@ -6,4 +6,8 @@ module.exports = {
   "transform": {
     "^.+\\.tsx?$": "ts-jest"
   },
+  "automock": false,
+  "setupFiles": [
+    "./setup-jest.js"
+  ]
 }

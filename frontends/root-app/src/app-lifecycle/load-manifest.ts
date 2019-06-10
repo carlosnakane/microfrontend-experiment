@@ -1,8 +1,9 @@
 import { IAppManifest } from './i-app-manifest';
 
+const manifestFileName = 'app-manifest.json';
 
 const loadManifest = async (appUrl: string): Promise<IAppManifest | null> => {
-  const manifest = await fetch(`${appUrl}/app-manifest.json`);
+  const manifest = await fetch(`${appUrl}/${manifestFileName}`);
   if (manifest.status === 200) {
     try {
       return await manifest.json();
@@ -13,5 +14,7 @@ const loadManifest = async (appUrl: string): Promise<IAppManifest | null> => {
 
   return null;
 };
+
+export { manifestFileName };
 
 export default loadManifest;
