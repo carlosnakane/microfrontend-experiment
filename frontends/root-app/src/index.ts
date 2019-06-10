@@ -1,7 +1,9 @@
 import './root-menu';
+import loadAsset from './app-lifecycle/load-asset';
+import loadManifest from './app-lifecycle/load-manifest';
 
 import { getCurrentRoute, initialize as initializeRouter, subscribe, navigate } from './router';
-import AppLifecycle from './app-lifecycle';
+import AppLifecycle from './app-lifecycle/index';
 
 const rootMenu = document.createElement('root-menu');
 const baseHref = document.createElement('base');
@@ -50,7 +52,7 @@ const changeApp = async (newRoute: string, oldRoute?: string) => {
 const initialize = () => {
   window.removeEventListener('DOMContentLoaded', blank);
 
-  appLifecycle = new AppLifecycle(document, window);
+  appLifecycle = new AppLifecycle(loadManifest, loadAsset, document, window);
 
   initializeRouter();
   subscribe(changeApp);

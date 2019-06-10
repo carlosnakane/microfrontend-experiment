@@ -15,5 +15,6 @@ module.exports = {
     "ts-jest": {
       "tsConfig": "tsconfig.test.json"
     }
-  }
+  },
+  "testRegex": "src/.*\.test\.ts$"
 }
