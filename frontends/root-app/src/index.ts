@@ -3,7 +3,7 @@ import loadAsset from './app-lifecycle/load-asset';
 import loadManifest from './app-lifecycle/load-manifest';
 
 import { getCurrentRoute, initialize as initializeRouter, subscribe, navigate } from './router';
-import AppLifecycle from './app-lifecycle/index';
+import AppLifecycle from './app-lifecycle/app-lifecycle';
 
 const rootMenu = document.createElement('root-menu');
 const baseHref = document.createElement('base');

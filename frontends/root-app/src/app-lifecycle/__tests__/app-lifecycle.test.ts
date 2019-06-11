@@ -1,4 +1,4 @@
-import AppLifecycle from '../index';
+import AppLifecycle from '../app-lifecycle';
 import loadAssetMock from './__mocks__/load-asset.mock';
 import loadManifestMock from './__mocks__/load-manifest.mock';
 import appManifestMock from './__mocks__/app-manifest.mock';
