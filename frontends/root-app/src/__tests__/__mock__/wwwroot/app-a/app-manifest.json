@@ -1,0 +1,8 @@
+{
+  "rootnode": "<div id='app-a'></div>",
+  "entrypoint": "index.js",
+  "assets": [
+    "dependencies.js",
+    "styles.css"
+  ]
+}
