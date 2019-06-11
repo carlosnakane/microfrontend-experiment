@@ -6,7 +6,7 @@ describe('Root app navigation and lifecycle', () => {
   let page: Page;
 
   beforeAll(async () => {
-    browser = await launch({ headless: false });
+    browser = await launch();
     page = await browser.newPage();
   });
 
@@ -16,7 +16,7 @@ describe('Root app navigation and lifecycle', () => {
     let html = await page.$eval('body', e => e.innerHTML);
     expect(html).toContain('App A');
     expect(html).toContain('App B');
-  }, 2000)
+  }, 3000)
 
   test('navigate to app-a and render it', async () => {
     const appALinkHandle = await page.evaluateHandle(`document.querySelector("body > root-menu").shadowRoot.querySelector("div > ul > li:nth-child(1) > a")`);
@@ -25,7 +25,7 @@ describe('Root app navigation and lifecycle', () => {
     await page.waitForSelector('div.App');
     const html = await page.$eval('body', e => e.innerHTML);
     expect(html).toContain('Learn React');
-  }, 2000)
+  }, 3000)
 
   test('navigate to app-b and render it', async () => {
     const appBLinkHandle = await page.evaluateHandle(`document.querySelector("body > root-menu").shadowRoot.querySelector("div > ul > li:nth-child(2) > a")`);
@@ -34,7 +34,7 @@ describe('Root app navigation and lifecycle', () => {
     await page.waitForSelector('h1');
     const html = await page.$eval('body', e => e.innerHTML);
     expect(html).toContain('Welcome to app-b!');
-  }, 2000);
+  }, 3000);
 
   afterAll(async () => {
     await page.close();

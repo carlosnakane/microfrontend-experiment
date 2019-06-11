@@ -3,7 +3,7 @@ import loadAssetMock from './__mocks__/load-asset.mock';
 import loadManifestMock from './__mocks__/load-manifest.mock';
 import appManifestMock from './__mocks__/app-manifest.mock';
 
-describe('', () => {
+describe('app-lifecycle should', () => {
 
   const mockDocument = new DOMParser().parseFromString('<html><head></head><body></body</html>', 'text/html');
   // @ts-ignore

@@ -11,10 +11,10 @@ describe('load-asset should...', () => {
     const document = createDocument();
     const scriptSrc = 'http://nowhere/script.js';
     loadAsset(scriptSrc, document).then(res => {
-      expect(res.message).toEqual('success');
-      expect(res.payload).toHaveProperty('src');
+      expect(res.result).toBe('success');
+      expect(String(res.payload)).toBe('[object HTMLScriptElement]');
     }).catch(() => {
-      console.log('Script tag error');
+      expect.assertions(1);
     });
 
     const scriptTag = document.head.getElementsByTagName('script');
