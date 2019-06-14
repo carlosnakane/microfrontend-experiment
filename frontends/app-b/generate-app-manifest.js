@@ -15,7 +15,7 @@ const writeManifest = (assets) => {
     "assets": assets.filter(file => file !== entrypoint)
   };
 
-  fs.writeFile (path.resolve(__dirname, "./dist/app-b/app-manifest.json"), JSON.stringify(appManifest), function(err) {
+  fs.writeFile (path.resolve(__dirname, "./dist/app-manifest.json"), JSON.stringify(appManifest), function(err) {
       if (err) {
         throw err;
       }
@@ -24,7 +24,7 @@ const writeManifest = (assets) => {
   );
 }
 
-fs.readFile(path.resolve(__dirname, './dist/app-b/index.html'), (err, data) => {
+fs.readFile(path.resolve(__dirname, './dist/index.html'), (err, data) => {
   if (err) {
     throw err; 
   }

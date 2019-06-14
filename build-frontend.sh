@@ -22,13 +22,13 @@ cd ../app-a
 npm i
 npm run build
 mkdir "../../$HTML_DIR/app-a"
-cp -r build/* "../../$HTML_DIR/app-a"
+cp -r dist/* "../../$HTML_DIR/app-a"
 
 cd ../app-b
 npm i
 npm run build
 mkdir "../../$HTML_DIR/app-b"
-cp -r dist/app-b "../../$HTML_DIR"
+cp -r dist/* "../../$HTML_DIR/app-b"
 
 cd ../root-app
 npm i
