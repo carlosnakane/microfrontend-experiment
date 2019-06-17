@@ -16,6 +16,6 @@ module.exports = {
       "tsConfig": "tsconfig.test.json"
     }
   },
-  "testResultsProcessor": "./jest-trx-processor.js",
+  "testResultsProcessor": "./jest-trx-results-processor.js",
   "testRegex": "src/.*\.test\.ts$"
 }

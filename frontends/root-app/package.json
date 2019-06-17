@@ -8,8 +8,8 @@
     "lint": "eslint src/**/*.ts",
     "buildtest": "webpack && cd dist && copyfiles ** ../src/__tests__/__mock__/wwwroot",
     "pretest": "npm run buildtest",
-    "test:server": "node ./src/__tests__/http-server.js",
     "jest": "jest",
+    "test:server": "node ./src/__tests__/http-server.js",
     "test": "cross-env TEST_PORT=18060 npm-run-all --parallel jest test:server"
   },
   "license": "ISC",
