@@ -1,5 +1,5 @@
 var builder = require('jest-trx-results-processor');     
 var processor = builder({
-  outputFile: 'jestTestresults.trx' 
+  outputFile: 'jest-trx-processor-result.trx' 
 });
 module.exports = processor;

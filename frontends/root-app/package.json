@@ -9,7 +9,7 @@
     "buildtest": "webpack && cd dist && copyfiles ** ../src/__tests__/__mock__/wwwroot",
     "pretest": "npm run buildtest",
     "test:server": "node ./src/__tests__/http-server.js",
-    "jest": "jest --ci --reporters=jest-junit --reporters=default --coverage --coverageReporters=cobertura --coverageReporters=html",
+    "jest": "jest",
     "test": "cross-env TEST_PORT=18060 npm-run-all --parallel jest test:server"
   },
   "license": "ISC",
@@ -31,7 +31,7 @@
     "jest": "^24.8.0",
     "jest-cli": "^24.8.0",
     "jest-fetch-mock": "^2.1.2",
-    "jest-trx-results-processor": "^0.1.0",
+    "jest-junit": "^6.4.0",
     "npm-run-all": "^4.1.5",
     "prettier": "^1.17.1",
     "puppeteer": "^1.17.0",
