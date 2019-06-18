@@ -6,11 +6,9 @@
     "build": "webpack",
     "postbuild": "cd dist & copyfiles ** ../../../volume/nginx/html",
     "lint": "eslint src/**/*.ts",
-    "buildtest": "webpack && cd dist && copyfiles ** ../src/__tests__/__mock__/wwwroot",
-    "pretest": "npm run buildtest",
-    "jest": "jest",
-    "test:server": "node ./src/__tests__/http-server.js",
-    "test": "cross-env TEST_PORT=18060 npm-run-all --parallel jest test:server"
+    "test": "jest",
+    "builde2e": "webpack && cd dist && copyfiles ** ../e2e/__mock__/wwwroot",
+    "e2e": "npm run builde2e && cross-env PORT=18060 node ./e2e/run-e2e.js"
   },
   "license": "ISC",
   "devDependencies": {
@@ -33,7 +31,6 @@
     "jest-fetch-mock": "^2.1.2",
     "jest-junit": "^6.4.0",
     "jest-trx-results-processor": "^0.1.0",
-    "npm-run-all": "^4.1.5",
     "prettier": "^1.17.1",
     "puppeteer": "^1.17.0",
     "ts-jest": "^24.0.2",

@@ -2,7 +2,6 @@ import { launch, Page, Browser } from 'puppeteer';
 
 describe('Root app navigation and lifecycle', () => {
 
-  const port = process.env.TEST_PORT;
   let browser: Browser;
   let page: Page;
 
@@ -12,7 +11,7 @@ describe('Root app navigation and lifecycle', () => {
   });
 
   test('blank page', async () => {
-    await page.goto('http://localhost:' + port);
+    await page.goto('http://localhost:' + process.env.PORT);
     await page.waitForSelector('root-menu');
     let html = await page.$eval('body', e => e.innerHTML);
     expect(html).toContain('App A');

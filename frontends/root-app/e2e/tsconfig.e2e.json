@@ -1,0 +1,7 @@
+{
+  "extends": "../tsconfig.test.json",
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "inlineSourceMap": true
+  }
+}

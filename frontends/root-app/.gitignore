@@ -1,4 +1,4 @@
 coverage/
-src/__tests__/__mock__/wwwroot/root-app/
-src/__tests__/__mock__/wwwroot/index.html
+e2e/__mock__/wwwroot/root-app/
+e2e/__mock__/wwwroot/index.html
 jest-trx-processor-result.trx
