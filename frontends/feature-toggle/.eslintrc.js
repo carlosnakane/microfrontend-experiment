@@ -46,19 +46,15 @@ module.exports = {
     "jsx-a11y/no-static-element-interactions": 0,
     "jsx-a11y/anchor-is-valid": 0,
     "linebreak-style": 0,
-    // Too restrictive, writing ugly code to defend against a very unlikely scenario: https://eslint.org/docs/rules/no-prototype-builtins
     "no-prototype-builtins": "off",
     "import/prefer-default-export": "off",
     "import/no-default-export": [0, "camel-case"],
-    // Too restrictive: https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/destructuring-assignment.md
     "react/destructuring-assignment": "off",
     "react/jsx-filename-extension": "off",
-    // Use function hoisting to improve code readability
     "no-use-before-define": [
       "error",
       { functions: false, classes: true, variables: true }
     ],
-    // Makes no sense to allow type inferrence for expression parameters, but require typing the response
     "@typescript-eslint/explicit-function-return-type": [
       "off",
       { allowTypedFunctionExpressions: true }
@@ -67,22 +63,16 @@ module.exports = {
       "error",
       { functions: false, classes: true, variables: true, typedefs: true }
     ],
-    // Common abbreviations are known and readable
     "unicorn/prevent-abbreviations": "off",
     "@typescript-eslint/explicit-member-accessibility": 0,
     "import/no-cycle": 0,
-    "react-hooks/rules-of-hooks": "error", // Checks rules of Hooks
-    "react-hooks/exhaustive-deps": "warn", // Checks effect dependencies
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
 
     // Conflict with prettier
     "arrow-body-style": ["error", "as-needed"],
     "object-curly-newline": 0,
     "implicit-arrow-linebreak": 0,
     "operator-linebreak": 0
-  },
-  settings: {
-    // support import modules from TypeScript files in JavaScript files
-    "import/resolver": { node: { extensions: [".js", ".ts", ".tsx"] } },
-    polyfills: ["fetch", "Promise", "URL", "object-assign"]
   }
 };
