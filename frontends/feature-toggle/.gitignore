@@ -1,2 +1,4 @@
 dist
 node_modules/*
+jest-trx-processor-result.trx
+coverage
