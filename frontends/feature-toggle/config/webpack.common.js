@@ -1,18 +1,18 @@
 const path = require('path');
 
 module.exports = {
-  entry: './src/index.tsx',
+  entry: {
+    'index': './src/index.tsx'
+  },
 
   output: {
-    filename: '[name].[contenthash].js',
-    path: path.resolve(__dirname, '/dist'),
-    publicPath: '/feature-toggle/'
+    filename: '[name].[contenthash].js'
   },
 
   devtool: 'source-map',
 
   resolve: {
-      extensions: ['.ts', '.tsx', '.js', '.json'],
+    extensions: ['.ts', '.tsx', '.js', '.json'],
   },
 
   module: {
